@@ -57,7 +57,10 @@ Payouts are multiplied by the current streak:
 
 The game starts with 500 coins and a streak of 1.
 
-## Future Projects
+## Horse Betting
+A terminal-based horse betting game with 3 horses.
+Run it in the same way as the slot machine, but select **Horse Betting** instead of Slot Machine.
+## Features
+* Inlcudes option for the user to change bet amount and choose what horse to bet on
+* Payout is 2x the bet amount
 
-Add each new game as its own top-level section in this README. Include a short
-description, run command, features, and any project-specific instructions.
