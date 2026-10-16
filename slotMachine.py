@@ -7,6 +7,7 @@ import time
 import random
 from pathlib import Path
 import pyinputplus as pyip
+from main import clearConsole
 betAmount = 1
 
 
@@ -14,7 +15,7 @@ def spin():
     if money >= betAmount:
         addData("money", -betAmount)
         full = [random.randint(1, 7), random.randint(1, 7), random.randint(1, 7)]
-        for i in range(10):
+        for spinIndex in range(10):
             time.sleep(0.1)
             clearConsole()
             print(random.randint(1, 7), random.randint(1, 7), random.randint(1, 7))
@@ -28,31 +29,31 @@ def spin():
         
 def gameOver():
 
-    file_path = Path("data.json")
-    file_path.unlink(missing_ok=True)
+    filePath = Path("data.json")
+    filePath.unlink(missing_ok=True)
     restartProgram()
 def checkWin(numbers):
     global money, jackpot777, jackpot, pairs, sequences, losses, streak
     num1 = numbers[0]
     num2 = numbers[1]
     num3 = numbers[2]
-    is_sequence = (num1 + 1 == num2 and num2 + 1 == num3) or (num3 - 1 == num2 and num2 - 1 == num1)
-    is_win = num1 == num2 == num3 or num1 == num2 or num1 == num3 or num2 == num3 or is_sequence
-    if is_win:
+    isSequence = (num1 + 1 == num2 and num2 + 1 == num3) or (num3 - 1 == num2 and num2 - 1 == num1)
+    isWin = num1 == num2 == num3 or num1 == num2 or num1 == num3 or num2 == num3 or isSequence
+    if isWin:
         green = "\033[42m\033[30m"
         reset = "\033[0m"
-        if num1 == num2 == num3 or is_sequence:
-            winning_positions = {0, 1, 2}
+        if num1 == num2 == num3 or isSequence:
+            winningPositions = {0, 1, 2}
         elif num1 == num2:
-            winning_positions = {0, 1}
+            winningPositions = {0, 1}
         elif num1 == num3:
-            winning_positions = {0, 2}
+            winningPositions = {0, 2}
         else:
-            winning_positions = {1, 2}
+            winningPositions = {1, 2}
 
         result = []
         for index, number in enumerate(numbers):
-            if index in winning_positions:
+            if index in winningPositions:
                 result.append(f"{green}{number}{reset}")
             else:
                 result.append(str(number))
@@ -72,7 +73,7 @@ def checkWin(numbers):
         print(f"Pairs! You win {25 * streak} coins!")
         addData("money", 25 * streak)
         addData("Pairs", 1)
-    elif is_sequence:
+    elif isSequence:
         print(f"Sequences! You win {200 * streak} coins!")
         addData("money", 200 * streak)
         addData("Sequences", 1)
@@ -90,8 +91,7 @@ def restartProgram():
     print("Restarting script...")
     sys.stdout.flush()
     os.execv(sys.executable, [sys.executable] + sys.argv)
-def clearConsole():
-    os.system('cls' if os.name == 'nt' else 'clear')
+
 def addData(key, amount=1):
     if key not in data:
         raise KeyError(f"'{key}' is not in the JSON data")
@@ -143,28 +143,29 @@ try:
             
             updateScreen()
             options = ["Spin", "Buy Streak", "View Payout", "View Stats", "Reset Game", "Change Bet Amount", "Quit"]
-            terminal_menu = TerminalMenu(options)
-            menu_entry_index = terminal_menu.show()
-            choice = options[menu_entry_index]
+            terminalMenu = TerminalMenu(options)
+            menuEntryIndex = terminalMenu.show()
+            if menuEntryIndex is None:
+                break
+            choice = options[menuEntryIndex]
             if choice == "Spin":
                 numbers = spin()
                 if numbers is not None:
                     checkWin(numbers)
-                # print(money, jackpot777, jackpot, pairs, sequences, losses, streak)
                 time.sleep(1)
                 clearConsole()
                 updateScreen()
             elif choice == "Buy Streak":
                 cost = 20
-                maximum_amount = money // cost
-                if maximum_amount >= 1:
+                maximumAmount = money // cost
+                if maximumAmount >= 1:
                     amount = pyip.inputInt(
-                        prompt=f"How many streaks do you want to buy? (1 to {maximum_amount}): ",
+                        prompt=f"How many streaks do you want to buy? (1 to {maximumAmount}): ",
                         min=1,
-                        max=maximum_amount,
+                        max=maximumAmount,
                     )
-                    total_cost = cost * amount
-                    addData("money", -total_cost)
+                    totalCost = cost * amount
+                    addData("money", -totalCost)
                     addData("Streak", amount)
                     updateScreen()
                 else:
@@ -189,8 +190,8 @@ try:
             elif choice == "Reset Game":
                 confirm = input("Are you sure you want to reset the game? This will delete your data. (y/n): ")
                 if confirm.lower() == "y":
-                    file_path = Path("data.json")
-                    file_path.unlink(missing_ok=True)
+                    filePath = Path("data.json")
+                    filePath.unlink(missing_ok=True)
                     restartProgram()
                 else:
                     print("Reset cancelled.")
@@ -220,6 +221,3 @@ except (FileNotFoundError, json.JSONDecodeError):
     with open("data.json", "w") as file:
         json.dump(data, file, indent=2)
     restartProgram()
-
-
-
