@@ -1,4 +1,5 @@
 
+import pandas as pd
 from simple_term_menu import TerminalMenu
 import json
 import os
@@ -16,9 +17,17 @@ def spin():
         addData("money", -betAmount)
         full = [random.randint(1, 7), random.randint(1, 7), random.randint(1, 7)]
         for spinIndex in range(10):
-            time.sleep(0.1)
+            time.sleep(0.05)
             clearConsole()
             print(random.randint(1, 7), random.randint(1, 7), random.randint(1, 7))
+        for spinIndex in range(10):
+            time.sleep(0.05)
+            clearConsole()
+            print(full[0], random.randint(1, 7), random.randint(1, 7))
+        for spinIndex in range(10):
+            time.sleep(0.05)
+            clearConsole()
+            print(full[0], full[1], random.randint(1, 7))
         clearConsole()
         return full
     else:
@@ -121,7 +130,7 @@ def updateScreen():
             clearConsole()
             gameOver()
     else:
-        print(f"Money: {money} | 777 Jackpot: {jackpot777} | Jackpot: {jackpot} | Pairs: {pairs} | Sequences: {sequences} | Losses: {losses} | Streak: {streak}")
+        print(f"Money: {money} | Streak: {streak}")
 clearConsole()
 
 
@@ -142,7 +151,7 @@ try:
         while choice != "Quit":
             
             updateScreen()
-            options = ["Spin", "Buy Streak", "View Payout", "View Stats", "Reset Game", "Change Bet Amount", "Quit"]
+            options = ["Spin", "Buy Streak", "Change Bet Amount", "View Payout", "View Stats", "Reset Game", "Quit"]
             terminalMenu = TerminalMenu(options)
             menuEntryIndex = terminalMenu.show()
             if menuEntryIndex is None:
@@ -157,7 +166,16 @@ try:
                 updateScreen()
             elif choice == "Buy Streak":
                 cost = 20
-                maximumAmount = money // cost
+                minimumRemaining = 1
+                maximumAmount = max(0, (money - minimumRemaining) // cost)
+                xValues = list(range(0, (maximumAmount + 1) * cost, cost))
+
+                yValues = [x//20 for x in xValues]
+                df = pd.DataFrame({
+                    'Cost': xValues,
+                    'Amount': yValues
+                })
+                print(df.to_string(index=False))
                 if maximumAmount >= 1:
                     amount = pyip.inputInt(
                         prompt=f"How many streaks do you want to buy? (1 to {maximumAmount}): ",
