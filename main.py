@@ -13,13 +13,21 @@ def run(script):
 
 
 def main():
-    clearConsole()
-    options = ["Slot Machine", "Quit"]
-    terminal_menu = TerminalMenu(options, title="-- Main Menu --")
-    menu_entry_index = terminal_menu.show()
+    choice = ""
+    while choice != "Quit":
+        clearConsole()
+        options = ["Slot Machine", "Horse Betting", "Quit"]
+        terminal_menu = TerminalMenu(options, title="-- Main Menu --")
+        terminalMenu = TerminalMenu(options)
+        menuEntryIndex = terminalMenu.show()
+        if menuEntryIndex is None:
+            break
+        choice = options[menuEntryIndex]
+        if choice == "Slot Machine":
+            run("slotMachine.py")
 
-    if menu_entry_index == 0:
-        run("slotMachine.py")
+        if choice == "Horse Betting":
+            run("horseBetting.py")
 
 
 if __name__ == "__main__":

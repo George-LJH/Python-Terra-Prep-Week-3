@@ -8,7 +8,7 @@ import time
 import random
 from pathlib import Path
 import pyinputplus as pyip
-from main import clearConsole
+from main import *
 betAmount = 1
 
 
@@ -220,7 +220,7 @@ try:
                     print(f"Bet amount changed to {betAmount}.")
                 else:
                     print("Invalid bet amount. Must be greater than 0.")
-
+        run("main.py")
     else:
         print("JSON file missing data. Setting defaults...")
         data.setdefault("money", 500)

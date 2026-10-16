@@ -1,102 +1,63 @@
-### Hi! Welcome to your VS-Code Space!
+# Python Games
 
-You can use this just like you would vs-code on your own computer! For security reasons, we can not give you root access to the container, but we have preinstalled a number of development tools for you!
+A collection of games written in Python.
 
-#### Pre-installed tools:
-If a tool you need is not listed, attempt to install it using one of the package managers listed, and if that is not possible, ask in #spaces on slack and I can probably add the tool!
+## Projects
 
-If a tool listed here is not working, wait a few minutes and try again! The installation is ran in the background upon space creation to minimize space creation times, so you might have to wait a minute or two for all tools to become available
+- [Slot Machine](#slot-machine)
 
-##### Hackatime
+## Requirements
 
-Make sure to set your hackatime api key in settings! if you have done that, Hackatime has been auto installed and set up for you, and will be tracking your time
+- Python 3.10 or newer
+- The packages listed in `requirements.txt`
 
-##### General
-```
-git
-github-cli
-curl
-wget
-nano
-vim
-unzip
-zip
-build-essentials
-cmake
-pkg-config
-jq
-tree
-htop
-tmux
-less
-ripgrep
-fd-find
-rsync
-openssh-client
-apt-transport-https
-ca-certificates
-gnupg
-```
-##### Python:
-```
-python3
-python3-pip
-python3-venv
-python3-dev
-python3-setuptools
-uv
+## Setup
+
+Install the libraries
+
+```bash
+pip install -r requirements.txt
 ```
 
-##### Javascript:
-```
-nodejs
-npm
-yarn
-pnpm
+## Slot Machine
+
+A terminal-based slot machine with three reels, customizable bets, streaks,
+payouts, statistics, and saved progress.
+
+### Run
+
+Start the main menu:
+
+```bash
+python3 main.py
 ```
 
-##### Java:
-```
-openjdk-17-jdk
-openjdk-17-jre
-```
+Use the arrow keys to select **Slot Machine**, then press Enter.
 
-##### Rust:
-```
-rust
-cargo
-```
+### Features
 
-##### PHP:
-```
-php 
-php-cli 
-php-common 
-php-curl 
-php-json 
-php-mbstring 
-php-xml 
-php-zip
-```
+- Spin three reels.
+- Change the bet amount.
+- Buy streaks to increase payouts.
+- View payouts and statistics.
+- Reset the game.
+- Save progress in `data.json`.
+- Restart with starting money when game over.
 
-##### Database:
-```
-sqlite3
-postgresql-client
-mysql-client
-redis-tools
-```
+### Payouts
 
-##### Ruby:
-```
-ruby
-rails
-```
+Payouts are multiplied by the current streak:
 
-###### Other:
-```
-go
-crystal
-ffmpeg
-imagemagick
-```
+| Result | Base payout |
+| --- | ---: |
+| Three 7s | 1,000 coins |
+| Three matching symbols | 400 coins |
+| Three-number sequence | 200 coins |
+| Any matching pair | 25 coins |
+
+The game starts with 500 coins and a streak of 1.
+
+## Future Projects
+
+Add each new game as its own top-level section in this README. Include a short
+description, run command, features, and any project-specific instructions.
